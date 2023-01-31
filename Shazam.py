@@ -12,10 +12,10 @@ from numpy.fft import fft, fftfreq
 
 #il faut modifier a chaque execution le fichier audio a analyser
 #reading wav file
-Fs, aud = wavfile.read('Pompidou1970.wav')
+Fs, aud = wavfile.read('Sarkozy2008.wav')
 
 #openning wav file
-wav_obj = wave.open('Pompidou1970.wav', 'rb')
+wav_obj = wave.open('Sarkozy2008.wav', 'rb')
 
 #sampling file
 sample_freq = wav_obj.getframerate()
@@ -53,21 +53,23 @@ coordinates = points.get_offsets()
 
 filtered_coordinates = [(x,y) for x,y in coordinates if x >= 0 and x <= 100 and y >= 10 and y <= 1000]
 
+#ecriture du résultat de l'analyse dans un fichier texte
+with open("analysis.txt", "w") as file:
+    for coord in filtered_coordinates:
+        file.write(str(coord))
+
+with open("analysis.txt", "r") as file:
+    to_compare = file.read().splitlines()
+
 next_file = False
 
 # Open the text file for reading
 with open('Mitterrand', 'r') as file:
     # Read the contents of the file
     file_contents = file.read().splitlines()
-    print(file_contents)
-    print(len(file_contents))
-    # Check if each element of the file contents is present in the compare list
-    for line in file_contents:
-        value = float(line.strip())
 
-        if value not in filtered_coordinates and next_file == False:
+    if to_compare != file_contents:
             next_file = True
-            print("pas le bon")
     if (next_file == False):
         print("Il s'agit du président Mitterrand en 1994")
 
@@ -78,13 +80,8 @@ if(next_file):
         file_contents = file.read().splitlines()
         next_file = False
 
-        # Check if each element of the file contents is present in the compare list
-        for line in file_contents:
-            value = float(line.strip())
-
-            if value not in filtered_coordinates and next_file == False:
-                next_file = True
-                print("pas le bon")
+        if to_compare != file_contents:
+            next_file = True
         if(next_file == False):
             print("Il s'agit du président Pompidou en 1970")
 
@@ -94,13 +91,7 @@ if(next_file):
         file_contents = file.read().splitlines()
         next_file = False
 
-
-        # Check if each element of the file contents is present in the compare list
-        for line in file_contents:
-            value = float(line.strip())
-
-            if value not in filtered_coordinates and next_file == False:
-                next_file = True
-                print("pas le bon")
+        if to_compare != file_contents:
+            next_file = True
         if(next_file == False):
             print("Il s'agit du président Sarkozy en 2008")

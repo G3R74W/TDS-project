@@ -95,3 +95,6 @@ if(next_file):
             next_file = True
         if(next_file == False):
             print("Il s'agit du président Sarkozy en 2008")
+
+if(next_file):
+    print("aucune correspondance n'a été trouvée")
